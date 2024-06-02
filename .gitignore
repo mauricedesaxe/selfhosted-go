@@ -1,0 +1,23 @@
+# build files
+tmp
+bin
+
+# db files
+*.sqlite
+*.sqlite3
+*.db
+*.db*
+
+# env files
+*.env
+*.env.*
+
+# log files
+*.log
+
+# generated files
+*_templ.go
+
+# tailwind cli binary needs to be different based on OS
+tailwindcss
+public/css/tailwind.css

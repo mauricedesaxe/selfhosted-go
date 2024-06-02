@@ -1,0 +1,192 @@
+package common
+
+import (
+	"time"
+)
+
+// Base is a template that is meant to be used as a base for other templates.
+// It contains the HTML structure for the page, such as the head, body, header, footer, etc.
+templ Base(title string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			// meta tags
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title }</title>
+			// icons
+			<link rel="icon" type="image/x-icon" href="/images/favicon_io/favicon.ico"/>
+			<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_io/apple-touch-icon.png"/>
+			<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon_io/favicon-32x32.png"/>
+			<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon_io/favicon-16x16.png"/>
+			<link rel="manifest" href="/images/favicon_io/site.webmanifest"/>
+			<link rel="mask-icon" href="/images/favicon_io/safari-pinned-tab.svg" color="#5bbad5"/>
+			<meta name="msapplication-TileColor" content="#da532c"/>
+			<meta name="theme-color" content="#ffffff"/>
+			// styles
+			<link rel="stylesheet" href={ "/css/tailwind.css?" + GetFileModTime("./public/css/tailwind.css").Format(time.RFC3339) }/>
+			<link rel="stylesheet" href={ "/css/custom.css?" + GetFileModTime("./public/css/custom.css").Format(time.RFC3339) }/>
+			// scripts
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js"></script>
+			<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+			@Script("loaders.js")
+		</head>
+		<body class="dark:bg-gray-900 dark:text-white">
+			<div class="md:hidden bg-blue-500 w-full flex flex-col sm:flex-row justify-between items-center px-4 py-2">
+				<div class="container mx-auto">
+					<button
+						id="open-nav"
+						class="w-full text-center text-white block rounded-md py-2 px-4 transition-colors hover:bg-blue-600"
+					>
+						Open navigation
+					</button>
+				</div>
+			</div>
+			<header id="nav" class="absolute -translate-y-[200%] md:static md:translate-y-0 bg-blue-500 w-full md:flex flex-col sm:flex-row justify-between items-center px-4 py-2 transition-transform duration-300 z-10">
+				<div class="mx-auto container space-y-4 px-4 py-4">
+					<nav class="flex flex-col sm:flex-row justify-around overflow-x-auto gap-2 sm:gap-6">
+						<div class="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-6">
+							<a
+								class="text-white block rounded-md py-2 px-4 transition-colors text-center hover:bg-blue-600"
+								href="/"
+							>
+								<span class="inline-block md:hidden">Home</span>
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden md:block">
+									<path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
+								</svg>
+							</a>
+							<a
+								class="text-white block rounded-md py-2 px-4 transition-colors text-center hover:bg-blue-600"
+								href="/protected"
+							>
+								Protected
+							</a>
+						</div>
+						<div class="flex flex-col sm:flex-row md:justify-end gap-2 sm:gap-6">
+							<a
+								class="text-white block rounded-md py-2 px-4 transition-colors text-center hover:bg-blue-600"
+								href="/profile"
+							>
+								<div class="inline-block md:hidden">Profile</div>
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden md:block">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+								</svg>
+							</a>
+						</div>
+					</nav>
+				</div>
+			</header>
+			<script>
+				const openNavBtn = document.getElementById('open-nav');
+				const nav = document.getElementById('nav');
+				openNavBtn.addEventListener('click', () => {
+					nav.classList.toggle('-translate-y-[200%]');
+					openNavBtn.textContent = nav.classList.contains('-translate-y-[200%]') ? 'Open navigation' : 'Close navigation';
+				});
+			</script>
+			{ children... }
+			<footer class="mx-auto text-center p-4 bg-gray-50 dark:bg-gray-900 dark:text-white my-4">
+				<div class="container mx-auto">
+					<p>
+						Use <a class="text-blue-500 hover:underline" href="https://go-on-rails.com">Go on Rails</a> to build 
+						amazing web applications.
+					</p>
+				</div>
+			</footer>
+			<script>
+				window.addEventListener('load', () => {
+					quicklink.listen({
+						ignores: [/\/logout/]
+					});
+				});
+			</script>
+		</body>
+	</html>
+}
+
+templ ErrorPage(code string, subtitle string, err string) {
+	@Base("Error") {
+		<main class="mx-auto container space-y-12 px-4 py-4 max-w-3xl">
+			<section class="space-y-2">
+				<h1 class="text-4xl font-bold mb-4">{ code }</h1>
+				<p class="text-xl">
+					<strong>{ subtitle }</strong>
+					{ err }
+				</p>
+			</section>
+		</main>
+	}
+}
+
+var btnColors = map[string]string{
+	"primary":      "bg-blue-500 text-white hover:bg-blue-600",
+	"danger":       "bg-red-500 text-white hover:bg-red-600",
+	"light-danger": "bg-red-100 text-red-500 hover:bg-red-200",
+}
+
+type ButtonProps struct {
+	Copy  string // The text that will be displayed on the button
+	Style string // The style of the button (primary, secondary, danger)
+}
+
+templ Btn(props ButtonProps) {
+	<button
+		type="submit"
+		class={ "flex justify-center rounded-md p-2 min-w-[100px] w-full md:w-auto disabled:bg-gray-500 disabled:text-white transition-all duration-200 ease-in-out disabled:pointer-events-none dark:disabled:bg-gray-800 dark:disabled:text-gray-400" + " " + btnColors[props.Style] }
+	>
+		{ props.Copy }
+		<div data-loader class="hidden inline-block pl-2" role="status">
+			<span class="sr-only">Loading...</span>
+			<img class="w-6 h-6" src="/images/oval.svg" alt="Loading..."/>
+		</div>
+	</button>
+}
+
+type AnchorProps struct {
+	Copy  string // The text that will be displayed on the button
+	Link  string // The URL that the button will link to
+	Style string // The style of the button (primary, secondary, danger)
+}
+
+templ AnchorBtn(props AnchorProps) {
+	<a
+		class={ "inline-block py-2 px-4 rounded-md text-center min-w-[100px] w-full md:w-auto transition-all duration-200 ease-in-out" + " " + btnColors[props.Style] }
+		href={ templ.SafeURL(props.Link) }
+	>
+		{ props.Copy }
+	</a>
+}
+
+templ RedStripedOverlay() {
+	<div
+		class="absolute top-0 left-0 inset-0 bg-red-600 dark:bg-red-900 bg-opacity-20 h-full w-full z-50 flex justify-center items-center"
+		style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.5) 10px, rgba(255,255,255,0.5) 20px);"
+	>
+		<span class="text-2xl font-bold text-black dark:text-white bg-white dark:bg-gray-800 bg-opacity-75 p-2 rounded-md">Under construction</span>
+	</div>
+}
+
+templ LoaderOverlay(id string) {
+	<style>
+		.htmx-indicator{
+			display:none;
+		}
+		.htmx-request .htmx-indicator{
+			display:flex;
+		}
+		.htmx-request.htmx-indicator{
+			display:flex;
+		}
+	</style>
+	<div id={ id } class="htmx-indicator absolute top-0 left-0 inset-0 bg-black dark:bg-gray-800 bg-opacity-20 rounded-md h-full w-full z-50 flex justify-center items-center">
+		<img class="w-6 h-6" src="/images/oval.svg" alt="Loading..."/>
+	</div>
+}
+
+// To be used for local js scripts. It invokes them in a defered way and uses
+// the file modification time as a query string to bust the cache when the file
+// changes.
+templ Script(src string) {
+	<script defer src={ "/js/" + src + "?" + GetFileModTime("./public/js/"+src).Format(time.RFC3339) }>
+	</script>
+}

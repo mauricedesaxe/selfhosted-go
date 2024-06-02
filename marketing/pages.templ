@@ -1,0 +1,125 @@
+package marketing
+
+import (
+	"go-on-rails/common"
+)
+
+templ home_page() {
+	@common.Base("Go on Rails") {
+		<main class="mx-auto container space-y-6 px-4 py-4">
+			<article class="prose lg:prose-xl">
+				<h1>Go on Rails</h1>
+				<p>
+					A simple framework (more template than framework) that helps you quickly develop
+					self-hosted web applications with Go.
+				</p>
+				<h2>Things we like</h2>
+				<ul>
+					<li>light client / hyper media focus (old school page reloads &gt; HTMX &gt; React)</li>
+					<li>SQlite (portable, 0 latency db&lt;-&gt;app, quite fast for self-hosted single-node web apps)</li>
+					<li>Tailwind (easy to write, locality of behaviour)</li>
+					<li>no NPM, no build JS, just simple JS scripts</li>
+					<li>Templ templating language (multiple components per file, e2e type-safety)</li>
+					<li>Docker (easy deploy on any server)</li>
+					<li><a href="https://grugbrain.dev/">The Grug Brained Developer</a></li>
+				</ul>
+				<h3>Modular Design</h3>
+				<p>
+					We encourage organizing the application into distinct modules or domains. Domains should
+					represent business goals or sections of the site/application.
+				</p>
+				<h3>Modified MVC Architecture</h3>
+				<p>The framework adopts a modified version of the Model-View-Controller (MVC) architecture:</p>
+				<ul>
+					<li>
+						<strong>Controllers and Routes (<code>routes.go</code>)</strong>: The core of every module. It holds the routes and their controllers / handlers.
+						It&#39;s supposed to export and <code>AddRoutes()</code> function to be used in <code>main.go</code>.
+					</li>
+					<li>
+						<strong>Models (<code>models.go</code>)</strong>: When a module has many models / db tables / migrations, 
+						we separate them into a <code>models.go</code>. If a module has a simple db setup, we keep it in <code>routes.go</code>.
+					</li>
+					<li>
+						<strong>Views (<code>pages.templ</code> or <code>components.templ</code>)</strong>: Views are managed through the Templ templating language. 
+						Wherever it makes sense we want to separate templ functions into pages, components and/or partials.
+					</li>
+				</ul>
+				<h3>Common utility features</h3>
+				<ul>
+					<li>
+						<strong>Environment variables (<code>env.go</code>)</strong>: We offer a global variable which can be accessed with <code>common.Env</code>. 
+						It uses struct tags to map environment variables and provide default values. This setup ensures that 
+						all necessary configurations are in place at runtime.
+					</li>
+					<li>
+						<strong>Mailer configuration (<code>mailer.go</code>)</strong>: Offers an easy way to send emails. Stores the configuration
+						in SQlite instead of env variables. There are tradeoffs to this approach, but it suits self-hosted
+						applications well. For more info go to <code>mailer.go</code>.
+					</li>
+					<li>
+						<strong>Job Queue (<code>queue.go</code>)</strong>: Helps schedule tasks to be processed async, such as sending emails. You&#39;re
+						supposed to create a new queue with its own workers and channel for each module where you need one. You can
+						then add jobs as you go. If a certain job name is defined as &quot;lockable&quot;, then it can&#39;t be run concurrently.
+						This concurrency lock is useful in cases like: &quot;I don&#39;t want to schedule a password reset email to the same user 3 times&quot;.
+					</li>
+					<li>
+						<strong>Components (<code>components.templ</code>)</strong>: Base layouts, common pages, buttons, JS script invocation with built-in cache invalidation, 
+						HTMX (for ajax partials) and Quicklink (for prefetching) and other useful UI components to get you started.
+					</li>
+					<li>
+						<strong>Other utils (<code>utils.go</code>)</strong>: Helps render templ templates, define caching rules, offers syntactic sugar like <code>TernaryIf()</code> or
+						<code>Jsonify()</code>, and other UI helpers.
+					</li>
+				</ul>
+				<p>
+					There are other smaller utilities you may discover like the <code>Makefile</code> we wrote to help setup the project,
+					the <code>loaders.js</code> script to provide some interactivity cross-application when transitioning pages or 
+					Tailwind being pre-configured with the Tailwind CLI.
+				</p>
+				<h2>How to setup for development</h2>
+				<p>Make sure you have Go installed on your machine. We are using v1.21.3 right now.</p>
+				<p>Run the following commands:</p>
+				<p>
+					This command sets up a db folder, intalls templ, downloads tailwind CLI and inits tailwind.
+					Use the version of tailwindcss CLI that you want, macos-arm64 is the default.
+				</p>
+				<pre>
+					<code class="language-sh">
+						make setup ARCH="macos-arm64"
+					</code>
+				</pre>
+				<p>
+					Starts the development server (with file watcher) using <a href="https://github.com/cosmtrek/air">Air</a>.
+					Air needs to be installed on your sistem to run this.
+					The <code>.air.toml</code> config makes sure that templ and tailwind files are generated
+					before it generates the binary and run it in dev environment.
+				</p>
+				<pre>
+					<code>
+						make dev
+					</code>
+				</pre>
+				<p>That's it, you can start modifying code.</p>
+				<h2>How to deploy in production</h2>
+				<p>Make sure you are on a machine that supports Docker and has the docker daemon runnning.</p>
+				<p>Use the standard docker compose commands, like:</p>
+				<pre>
+					<code>
+						docker compose up -d --build # build and start server
+					</code>
+				</pre>
+			</article>
+		</main>
+	}
+}
+
+templ protected_page(userEmail string) {
+	@common.Base("Go on Rails") {
+		<main class="mx-auto container space-y-6 px-4 py-4">
+			<article class="prose lg:prose-xl">
+				<h1>Protected page</h1>
+				<p>Hello, <strong>{ userEmail }</strong>.</p>
+			</article>
+		</main>
+	}
+}
