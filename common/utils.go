@@ -136,3 +136,42 @@ func Async[T any](fn func() (T, error)) Promise[T] {
 
 	return p
 }
+
+func CacheKey(key string, args ...interface{}) string {
+	var result string = fmt.Sprintf("%v", key)
+	if len(args) == 0 {
+		return result
+	}
+	for _, arg := range args {
+		result += fmt.Sprintf(":%v", arg)
+	}
+	return result
+}
+
+type ICacheStore interface {
+	Get(key string) ([]byte, error)
+	Set(key string, val []byte, exp time.Duration) error
+}
+
+func Remember[T any](store ICacheStore, key string, duration time.Duration, fn func() (T, error)) (T, error) {
+	cached, err := store.Get(key)
+	if err == nil && cached != nil && len(cached) > 0 {
+		var result T
+		if err := json.Unmarshal(cached, &result); err != nil {
+			return result, err
+		}
+		return result, nil
+	}
+
+	result, err := fn()
+	if err != nil {
+		return result, err
+	}
+
+	computed, err := json.Marshal(result)
+	if err != nil {
+		return result, err
+	}
+	store.Set(key, computed, duration)
+	return result, nil
+}
