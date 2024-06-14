@@ -2,6 +2,7 @@ package common
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -174,4 +175,47 @@ func Remember[T any](store ICacheStore, key string, duration time.Duration, fn f
 	}
 	store.Set(key, computed, duration)
 	return result, nil
+}
+
+func NewCacheStore() *CacheStore {
+	return &CacheStore{
+		kV:       make(map[string][]byte),
+		expiries: make(map[string]time.Time),
+	}
+}
+
+type CacheStore struct {
+	kV       map[string][]byte
+	expiries map[string]time.Time
+}
+
+func (c *CacheStore) Get(key string) ([]byte, error) {
+	val, ok := c.kV[key]
+	if !ok {
+		return nil, errors.New("key not found")
+	}
+
+	expiry, exists := c.expiries[key]
+	if exists && time.Now().After(expiry) {
+		c.Delete(key)
+		return nil, errors.New("key expired")
+	}
+
+	return val, nil
+}
+
+func (c *CacheStore) Set(key string, val []byte, exp time.Duration) error {
+	c.kV[key] = val
+	if exp > 0 {
+		c.expiries[key] = time.Now().Add(exp)
+	} else {
+		delete(c.expiries, key)
+	}
+	return nil
+}
+
+func (c *CacheStore) Delete(key string) error {
+	delete(c.kV, key)
+	delete(c.expiries, key)
+	return nil
 }
