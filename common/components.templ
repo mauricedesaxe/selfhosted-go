@@ -157,15 +157,6 @@ templ AnchorBtn(props AnchorProps) {
 	</a>
 }
 
-templ RedStripedOverlay() {
-	<div
-		class="absolute top-0 left-0 inset-0 bg-red-600 dark:bg-red-900 bg-opacity-20 h-full w-full z-50 flex justify-center items-center"
-		style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.5) 10px, rgba(255,255,255,0.5) 20px);"
-	>
-		<span class="text-2xl font-bold text-black dark:text-white bg-white dark:bg-gray-800 bg-opacity-75 p-2 rounded-md">Under construction</span>
-	</div>
-}
-
 templ LoaderOverlay(id string) {
 	<style>
 		.htmx-indicator{
