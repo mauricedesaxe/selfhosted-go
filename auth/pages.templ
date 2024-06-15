@@ -53,7 +53,9 @@ templ signup_page(messages Messages) {
 					</label>
 					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="code" id="code"/>
 				</div>
-				@common.Btn(common.ButtonProps{Copy: "Signup", Style: "primary"})
+				@common.Btn("") {
+					Signup
+				}
 				<p>
 					Already have an account? <a href="/login" class="text-blue-500 hover:underline">Login</a>
 				</p>
@@ -93,7 +95,9 @@ templ login_page(messages Messages) {
 					</label>
 					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="password" name="password" id="password"/>
 				</div>
-				@common.Btn(common.ButtonProps{Copy: "Login", Style: "primary"})
+				@common.Btn("") {
+					Login
+				}
 				<p>
 					<a href="/forgot-password" class="text-blue-500 hover:underline">Forgot password?</a>
 				</p>
@@ -137,7 +141,9 @@ templ profile_page(messages Messages, user UserMetadata) {
 					<label for="confirm-password">Confirm Password</label>
 					<input type="password" name="confirm-password" id="confirm-password" class="border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-800 p-2 rounded-md"/>
 				</div>
-				@common.Btn(common.ButtonProps{Copy: "Change Password", Style: "primary"})
+				@common.Btn("") {
+					Change Password
+				}
 			</form>
 			<div class="flex justify-end">
 				<a href="/logout" class="text-red-500 hover:bg-red-500 hover:text-white p-2 rounded-md transition-colors duration-300">Logout</a>
@@ -169,7 +175,9 @@ templ forgot_password_page(messages Messages) {
 					</label>
 					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="email" id="email"/>
 				</div>
-				@common.Btn(common.ButtonProps{Copy: "Reset Password", Style: "primary"})
+				@common.Btn("") {
+					Reset Password
+				}
 				<p>
 					Remembered your password? <a href="/login" class="text-blue-500 hover:underline">Login</a>
 				</p>
@@ -206,7 +214,9 @@ templ reset_password_page(messages Messages, token string) {
 					<label class="block" for="password">New Password</label>
 					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="password" name="password" id="password"/>
 				</div>
-				@common.Btn(common.ButtonProps{Copy: "Reset Password", Style: "primary"})
+				@common.Btn("") {
+					Reset Password
+				}
 			</form>
 		</main>
 	}
@@ -331,7 +341,9 @@ templ admin_page(props admin_props) {
 						if len(props.SignupCodes) > 0 {
 							<form action="/admin/signup-codes/delete" method="post">
 								<input type="hidden" name="codes" id="codes" value=""/>
-								@common.Btn(common.ButtonProps{Copy: "Delete selected", Style: "danger"})
+								@common.Btn("") {
+									Delete selected
+								}
 							</form>
 						}
 					</div>
@@ -360,7 +372,9 @@ templ admin_page(props admin_props) {
 							<label class="block" for="password">Password</label>
 							<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="password" name="password" id="password" value={ props.SMTPSettings.Password }/>
 						</div>
-						@common.Btn(common.ButtonProps{Copy: "Update SMTP Settings", Style: "primary"})
+						@common.Btn("") {
+							Update SMTP Settings
+						}
 					</form>
 				</section>
 			</main>
@@ -413,7 +427,9 @@ templ user_page(user UserMetadata, messages Messages, newPassword string) {
 						You can reset the user's password here. You'll get a new random password in here
 						which you can share with the user. Remind them to change it after logging in.
 					</p>
-					@common.Btn(common.ButtonProps{Copy: "Reset Password", Style: "primary"})
+					@common.Btn("") {
+						Reset Password
+					}
 				</form>
 			}
 		</main>
@@ -451,7 +467,9 @@ templ new_signup_codes_page(messages Messages) {
 					</label>
 					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="uses" id="uses"/>
 				</div>
-				@common.Btn(common.ButtonProps{Copy: "Create Code", Style: "primary"})
+				@common.Btn("") {
+					Create Code
+				}
 			</form>
 		</main>
 	}
@@ -502,10 +520,14 @@ templ edit_signup_codes_page(messages Messages, code SignupCode) {
 						value={ strconv.Itoa(code.Uses) }
 					/>
 				</div>
-				@common.Btn(common.ButtonProps{Copy: "Update Code", Style: "primary"})
+				@common.Btn("") {
+					Update Code
+				}
 			</form>
 			<form action={ templ.SafeURL("/admin/signup-codes/delete/" + code.Code) } method="post">
-				@common.Btn(common.ButtonProps{Copy: "Delete Code", Style: "danger"})
+				@common.Btn("") {
+					Delete Code
+				}
 			</form>
 		</main>
 	}

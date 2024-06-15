@@ -118,43 +118,17 @@ templ ErrorPage(code string, subtitle string, err string) {
 	}
 }
 
-var btnColors = map[string]string{
-	"primary":      "bg-blue-500 text-white hover:bg-blue-600",
-	"danger":       "bg-red-500 text-white hover:bg-red-600",
-	"light-danger": "bg-red-100 text-red-500 hover:bg-red-200",
-}
-
-type ButtonProps struct {
-	Copy  string // The text that will be displayed on the button
-	Style string // The style of the button (primary, secondary, danger)
-}
-
-templ Btn(props ButtonProps) {
+templ Btn(classes string) {
 	<button
 		type="submit"
-		class={ "flex justify-center rounded-md p-2 min-w-[100px] w-full md:w-auto disabled:bg-gray-500 disabled:text-white transition-all duration-200 ease-in-out disabled:pointer-events-none dark:disabled:bg-gray-800 dark:disabled:text-gray-400" + " " + btnColors[props.Style] }
+		class={ TernaryIf(classes == "", "flex justify-center rounded-md p-2 min-w-[100px] w-full md:w-auto disabled:bg-gray-500 disabled:text-white transition-all duration-200 ease-in-out disabled:pointer-events-none dark:disabled:bg-gray-800 dark:disabled:text-gray-400 bg-blue-500 text-white hover:bg-blue-600", classes) }
 	>
-		{ props.Copy }
 		<div data-loader class="hidden inline-block pl-2" role="status">
 			<span class="sr-only">Loading...</span>
 			<img class="w-6 h-6" src="/images/oval.svg" alt="Loading..."/>
 		</div>
+		{ children... }
 	</button>
-}
-
-type AnchorProps struct {
-	Copy  string // The text that will be displayed on the button
-	Link  string // The URL that the button will link to
-	Style string // The style of the button (primary, secondary, danger)
-}
-
-templ AnchorBtn(props AnchorProps) {
-	<a
-		class={ "inline-block py-2 px-4 rounded-md text-center min-w-[100px] w-full md:w-auto transition-all duration-200 ease-in-out" + " " + btnColors[props.Style] }
-		href={ templ.SafeURL(props.Link) }
-	>
-		{ props.Copy }
-	</a>
 }
 
 templ LoaderOverlay(id string) {
