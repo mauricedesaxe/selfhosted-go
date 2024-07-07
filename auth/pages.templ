@@ -1,10 +1,10 @@
 package auth
 
 import (
-	"time"
+	"go-on-rails/common"
 	"strconv"
 	"strings"
-	"go-on-rails/common"
+	"time"
 )
 
 type Messages struct {
@@ -53,9 +53,9 @@ templ signup_page(messages Messages) {
 					</label>
 					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="code" id="code"/>
 				</div>
-				@common.Btn("") {
+				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
 					Signup
-				}
+				</button>
 				<p>
 					Already have an account? <a href="/login" class="text-blue-500 hover:underline">Login</a>
 				</p>
@@ -95,9 +95,9 @@ templ login_page(messages Messages) {
 					</label>
 					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="password" name="password" id="password"/>
 				</div>
-				@common.Btn("") {
+				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
 					Login
-				}
+				</button>
 				<p>
 					<a href="/forgot-password" class="text-blue-500 hover:underline">Forgot password?</a>
 				</p>
@@ -141,9 +141,9 @@ templ profile_page(messages Messages, user UserMetadata) {
 					<label for="confirm-password">Confirm Password</label>
 					<input type="password" name="confirm-password" id="confirm-password" class="border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-800 p-2 rounded-md"/>
 				</div>
-				@common.Btn("") {
+				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
 					Change Password
-				}
+				</button>
 			</form>
 			<div class="flex justify-end">
 				<a href="/logout" class="text-red-500 hover:bg-red-500 hover:text-white p-2 rounded-md transition-colors duration-300">Logout</a>
@@ -175,9 +175,9 @@ templ forgot_password_page(messages Messages) {
 					</label>
 					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="email" id="email"/>
 				</div>
-				@common.Btn("") {
+				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
 					Reset Password
-				}
+				</button>
 				<p>
 					Remembered your password? <a href="/login" class="text-blue-500 hover:underline">Login</a>
 				</p>
@@ -214,9 +214,9 @@ templ reset_password_page(messages Messages, token string) {
 					<label class="block" for="password">New Password</label>
 					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="password" name="password" id="password"/>
 				</div>
-				@common.Btn("") {
+				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
 					Reset Password
-				}
+				</button>
 			</form>
 		</main>
 	}
@@ -337,13 +337,13 @@ templ admin_page(props admin_props) {
 						</tbody>
 					</table>
 					<div class="flex gap-2 py-2">
-						@common.AnchorBtn(common.AnchorProps{Copy: "New code", Link: "/admin/signup-codes/new", Style: "primary"})
+						<a class="text-blue-500 hover:underline" href="/admin/signup-codes/new">New code</a>
 						if len(props.SignupCodes) > 0 {
 							<form action="/admin/signup-codes/delete" method="post">
 								<input type="hidden" name="codes" id="codes" value=""/>
-								@common.Btn("") {
+								<button class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md transition-colors duration-300">
 									Delete selected
-								}
+								</button>
 							</form>
 						}
 					</div>
@@ -372,9 +372,9 @@ templ admin_page(props admin_props) {
 							<label class="block" for="password">Password</label>
 							<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="password" name="password" id="password" value={ props.SMTPSettings.Password }/>
 						</div>
-						@common.Btn("") {
+						<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
 							Update SMTP Settings
-						}
+						</button>
 					</form>
 				</section>
 			</main>
@@ -387,7 +387,9 @@ templ admin_page(props admin_props) {
 				<p>
 					You can also logout if you're done using the button below.
 				</p>
-				@common.AnchorBtn(common.AnchorProps{Copy: "Logout", Link: "/logout", Style: "danger"})
+				<a class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md transition-colors duration-3000" href="/logout">
+					Logout
+				</a>
 			</aside>
 		</div>
 	}
@@ -427,9 +429,9 @@ templ user_page(user UserMetadata, messages Messages, newPassword string) {
 						You can reset the user's password here. You'll get a new random password in here
 						which you can share with the user. Remind them to change it after logging in.
 					</p>
-					@common.Btn("") {
+					<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
 						Reset Password
-					}
+					</button>
 				</form>
 			}
 		</main>
@@ -467,9 +469,9 @@ templ new_signup_codes_page(messages Messages) {
 					</label>
 					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="uses" id="uses"/>
 				</div>
-				@common.Btn("") {
+				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
 					Create Code
-				}
+				</button>
 			</form>
 		</main>
 	}
@@ -520,14 +522,14 @@ templ edit_signup_codes_page(messages Messages, code SignupCode) {
 						value={ strconv.Itoa(code.Uses) }
 					/>
 				</div>
-				@common.Btn("") {
+				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
 					Update Code
-				}
+				</button>
 			</form>
 			<form action={ templ.SafeURL("/admin/signup-codes/delete/" + code.Code) } method="post">
-				@common.Btn("") {
+				<button class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md transition-colors duration-300">
 					Delete Code
-				}
+				</button>
 			</form>
 		</main>
 	}

@@ -1,8 +1,6 @@
 package common
 
-import (
-	"time"
-)
+import "time"
 
 // Base is a template that is meant to be used as a base for other templates.
 // It contains the HTML structure for the page, such as the head, body, header, footer, etc.
@@ -88,7 +86,7 @@ templ Base(title string) {
 			<footer class="mx-auto text-center p-4 bg-gray-50 dark:bg-gray-900 dark:text-white my-4">
 				<div class="container mx-auto">
 					<p>
-						Use <a class="text-blue-500 hover:underline" href="https://go-on-rails.com">Go on Rails</a> to build 
+						Use <a class="text-blue-500 hover:underline" href="https://getair.com">Go on Rails</a> to build 
 						amazing web applications.
 					</p>
 				</div>
@@ -116,19 +114,6 @@ templ ErrorPage(code string, subtitle string, err string) {
 			</section>
 		</main>
 	}
-}
-
-templ Btn(classes string) {
-	<button
-		type="submit"
-		class={ TernaryIf(classes == "", "flex justify-center rounded-md p-2 min-w-[100px] w-full md:w-auto disabled:bg-gray-500 disabled:text-white transition-all duration-200 ease-in-out disabled:pointer-events-none dark:disabled:bg-gray-800 dark:disabled:text-gray-400 bg-blue-500 text-white hover:bg-blue-600", classes) }
-	>
-		<div data-loader class="hidden inline-block pl-2" role="status">
-			<span class="sr-only">Loading...</span>
-			<img class="w-6 h-6" src="/images/oval.svg" alt="Loading..."/>
-		</div>
-		{ children... }
-	</button>
 }
 
 templ LoaderOverlay(id string) {
