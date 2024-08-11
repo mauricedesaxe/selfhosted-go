@@ -37,10 +37,20 @@ endif
 kill:
 	@echo "Killing process on port 3000..."
 	@kill -9 $(lsof -i:3000 -t) || echo "No process running on port 3000."
+	@echo "Killed process on port 8080."
+	@kill -9 $(lsof -i:8080 -t) || echo "No process running on port 8080."
 
 dev:
 	@echo "Starting development server..."
 	@air
+
+test:
+	@echo "Running tests..."
+	@goconvey
+
+test-race:
+	@echo "Running tests with race detector..."
+	@go test -race ./...
 
 build:
 	@echo "Building project..."
