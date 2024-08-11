@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gofiber/storage/sqlite3"
 	"github.com/jmoiron/sqlx"
@@ -12,6 +13,12 @@ var Db *sqlx.DB
 var Storage *sqlite3.Storage
 
 func init() {
+	// make sure the db folder exists
+	err := os.MkdirAll("./db", os.ModePerm)
+	if err != nil {
+		log.Fatalf("Error creating db folder: %v", err)
+	}
+
 	InitDB(fmt.Sprintf("./db/%s.db", Env.ENVIRONMENT))
 }
 
