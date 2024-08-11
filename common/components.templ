@@ -30,43 +30,43 @@ templ Base(title string) {
 			@Script("loaders.js")
 		</head>
 		<body class="dark:bg-gray-900 dark:text-white">
-			<div class="md:hidden bg-blue-500 w-full flex flex-col sm:flex-row justify-between items-center px-4 py-2">
+			<div class="bg-blue-500 flex flex-col items-center justify-between md:hidden px-4 py-2 sm:flex-row w-full">
 				<div class="container mx-auto">
 					<button
 						id="open-nav"
-						class="w-full text-center text-white block rounded-md py-2 px-4 transition-colors hover:bg-blue-600"
+						class="block hover:bg-blue-600 px-4 py-2 rounded-md text-center text-white transition-colors w-full"
 					>
 						Open navigation
 					</button>
 				</div>
 			</div>
-			<header id="nav" class="absolute -translate-y-[200%] md:static md:translate-y-0 bg-blue-500 w-full md:flex flex-col sm:flex-row justify-between items-center px-4 py-2 transition-transform duration-300 z-10">
-				<div class="mx-auto container space-y-4 px-4 py-4">
-					<nav class="flex flex-col sm:flex-row justify-around overflow-x-auto gap-2 sm:gap-6">
-						<div class="flex flex-col sm:flex-row flex-1 gap-2 sm:gap-6">
+			<header id="nav" class="-translate-y-[200%] absolute bg-blue-500 duration-300 flex-col items-center justify-between md:flex md:static md:translate-y-0 px-4 py-2 sm:flex-row transition-transform w-full z-10">
+				<div class="container mx-auto px-4 py-4 space-y-4">
+					<nav class="flex flex-col gap-2 justify-around overflow-x-auto sm:flex-row sm:gap-6">
+						<div class="flex flex-1 flex-col gap-2 sm:flex-row sm:gap-6">
 							<a
-								class="text-white block rounded-md py-2 px-4 transition-colors text-center hover:bg-blue-600"
+								class="block hover:bg-blue-600 px-4 py-2 rounded-md text-center text-white transition-colors"
 								href="/"
 							>
 								<span class="inline-block md:hidden">Home</span>
-								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden md:block">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 hidden md:block w-6">
 									<path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
 								</svg>
 							</a>
 							<a
-								class="text-white block rounded-md py-2 px-4 transition-colors text-center hover:bg-blue-600"
+								class="block hover:bg-blue-600 px-4 py-2 rounded-md text-center text-white transition-colors"
 								href="/protected"
 							>
 								Protected
 							</a>
 						</div>
-						<div class="flex flex-col sm:flex-row md:justify-end gap-2 sm:gap-6">
+						<div class="flex flex-col gap-2 md:justify-end sm:flex-row sm:gap-6">
 							<a
-								class="text-white block rounded-md py-2 px-4 transition-colors text-center hover:bg-blue-600"
+								class="block hover:bg-blue-600 px-4 py-2 rounded-md text-center text-white transition-colors"
 								href="/profile"
 							>
 								<div class="inline-block md:hidden">Profile</div>
-								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden md:block">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 hidden md:block w-6">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
 								</svg>
 							</a>
@@ -83,10 +83,10 @@ templ Base(title string) {
 				});
 			</script>
 			{ children... }
-			<footer class="mx-auto text-center p-4 bg-gray-50 dark:bg-gray-900 dark:text-white my-4">
+			<footer class="bg-gray-50 dark:bg-gray-900 dark:text-white mx-auto my-4 p-4 text-center">
 				<div class="container mx-auto">
 					<p>
-						Use <a class="text-blue-500 hover:underline" href="https://getair.com">Go on Rails</a> to build 
+						Use <a class="hover:underline text-blue-500" href="https://getair.com">Go on Rails</a> to build 
 						amazing web applications.
 					</p>
 				</div>
@@ -104,9 +104,9 @@ templ Base(title string) {
 
 templ ErrorPage(code string, subtitle string, err string) {
 	@Base("Error") {
-		<main class="mx-auto container space-y-12 px-4 py-4 max-w-3xl">
+		<main class="container max-w-3xl mx-auto px-4 py-4 space-y-12">
 			<section class="space-y-2">
-				<h1 class="text-4xl font-bold mb-4">{ code }</h1>
+				<h1 class="font-bold mb-4 text-4xl">{ code }</h1>
 				<p class="text-xl">
 					<strong>{ subtitle }</strong>
 					{ err }
@@ -128,8 +128,8 @@ templ LoaderOverlay(id string) {
 			display:flex;
 		}
 	</style>
-	<div id={ id } class="htmx-indicator absolute top-0 left-0 inset-0 bg-black dark:bg-gray-800 bg-opacity-20 rounded-md h-full w-full z-50 flex justify-center items-center">
-		<img class="w-6 h-6" src="/images/oval.svg" alt="Loading..."/>
+	<div id={ id } class="absolute bg-black bg-opacity-20 dark:bg-gray-800 flex h-full htmx-indicator inset-0 items-center justify-center left-0 rounded-md top-0 w-full z-50">
+		<img class="h-6 w-6" src="/images/oval.svg" alt="Loading..."/>
 	</div>
 }
 

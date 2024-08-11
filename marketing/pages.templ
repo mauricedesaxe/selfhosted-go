@@ -4,8 +4,8 @@ import "go-on-rails/common"
 
 templ home_page() {
 	@common.Base("Go on Rails") {
-		<main class="mx-auto container space-y-6 px-4 py-4">
-			<article class="prose lg:prose-xl">
+		<main class="container mx-auto px-4 py-4 space-y-6">
+			<article class="lg:prose-xl prose">
 				<h1>Go on Rails</h1>
 				<p>
 					A simple framework (more template than framework) that helps you quickly develop
@@ -113,8 +113,8 @@ templ home_page() {
 
 templ protected_page(userEmail string) {
 	@common.Base("Go on Rails") {
-		<main class="mx-auto container space-y-6 px-4 py-4">
-			<article class="prose lg:prose-xl">
+		<main class="container mx-auto px-4 py-4 space-y-6">
+			<article class="lg:prose-xl prose">
 				<h1>Protected page</h1>
 				<p>Hello, <strong>{ userEmail }</strong>.</p>
 			</article>

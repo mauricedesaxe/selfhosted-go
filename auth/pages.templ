@@ -14,12 +14,12 @@ type Messages struct {
 
 templ signup_page(messages Messages) {
 	@common.Base("Signup") {
-		<main class="mx-auto container space-y-2 px-4 py-4">
-			<h1 class="text-2xl font-bold">Signup</h1>
-			<div class="empty:hidden bg-green-200 text-green-600 dark:bg-green-900 dark:text-green-200 p-4 rounded-md">
+		<main class="container mx-auto px-4 py-4 space-y-2">
+			<h1 class="font-bold text-2xl">Signup</h1>
+			<div class="bg-green-200 dark:bg-green-900 dark:text-green-200 empty:hidden p-4 rounded-md text-green-600">
 				{ common.TernaryIf(messages.Success != "", "🟢 " + messages.Success, "") }
 			</div>
-			<div class="empty:hidden bg-red-200 text-red-600 dark:bg-red-900 dark:text-red-200 p-4 rounded-md">
+			<div class="bg-red-200 dark:bg-red-900 dark:text-red-200 empty:hidden p-4 rounded-md text-red-600">
 				{ common.TernaryIf(messages.Error != "", "🔴 " + messages.Error, "") }
 			</div>
 			<form
@@ -31,33 +31,33 @@ templ signup_page(messages Messages) {
 					<label class="block" for="email">
 						Email
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">Make sure to use a valid email address.</span>
+						<span class="dark:text-gray-400 text-gray-500 text-sm">Make sure to use a valid email address.</span>
 					</label>
-					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="email" id="email"/>
+					<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="text" name="email" id="email"/>
 				</div>
 				<div>
 					<label class="block" for="password">
 						Password
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">Password must be at least 6 characters long.</span>
+						<span class="dark:text-gray-400 text-gray-500 text-sm">Password must be at least 6 characters long.</span>
 					</label>
-					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="password" name="password" id="password"/>
+					<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="password" name="password" id="password"/>
 				</div>
 				<div>
 					<label class="block" for="code">
 						Code 
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">
+						<span class="dark:text-gray-400 text-gray-500 text-sm">
 							If first setup, use "FRESH". If not, use the code you received from the admin.
 						</span>
 					</label>
-					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="code" id="code"/>
+					<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="text" name="code" id="code"/>
 				</div>
-				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
+				<button class="bg-blue-500 duration-300 hover:bg-blue-600 p-2 rounded-md text-white transition-colors">
 					Signup
 				</button>
 				<p>
-					Already have an account? <a href="/login" class="text-blue-500 hover:underline">Login</a>
+					Already have an account? <a href="/login" class="hover:underline text-blue-500">Login</a>
 				</p>
 			</form>
 		</main>
@@ -66,12 +66,12 @@ templ signup_page(messages Messages) {
 
 templ login_page(messages Messages) {
 	@common.Base("Login") {
-		<main class="mx-auto container space-y-2 px-4 py-4">
-			<h1 class="text-2xl font-bold">Login</h1>
-			<div class="empty:hidden bg-green-200 text-green-600 dark:bg-green-900 dark:text-green-200 p-4 rounded-md">
+		<main class="container mx-auto px-4 py-4 space-y-2">
+			<h1 class="font-bold text-2xl">Login</h1>
+			<div class="bg-green-200 dark:bg-green-900 dark:text-green-200 empty:hidden p-4 rounded-md text-green-600">
 				{ common.TernaryIf(messages.Success != "", "🟢 " + messages.Success, "") }
 			</div>
-			<div class="empty:hidden bg-red-200 text-red-600 dark:bg-red-900 dark:text-red-200 p-4 rounded-md">
+			<div class="bg-red-200 dark:bg-red-900 dark:text-red-200 empty:hidden p-4 rounded-md text-red-600">
 				{ common.TernaryIf(messages.Error != "", "🔴 " + messages.Error, "") }
 			</div>
 			<form
@@ -83,26 +83,26 @@ templ login_page(messages Messages) {
 					<label class="block" for="email">
 						Email
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">Make sure to use a valid email address.</span>
+						<span class="dark:text-gray-400 text-gray-500 text-sm">Make sure to use a valid email address.</span>
 					</label>
-					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="email" id="email"/>
+					<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="text" name="email" id="email"/>
 				</div>
 				<div>
 					<label class="block" for="password">
 						Password
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">Password must be at least 6 characters long.</span>
+						<span class="dark:text-gray-400 text-gray-500 text-sm">Password must be at least 6 characters long.</span>
 					</label>
-					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="password" name="password" id="password"/>
+					<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="password" name="password" id="password"/>
 				</div>
-				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
+				<button class="bg-blue-500 duration-300 hover:bg-blue-600 p-2 rounded-md text-white transition-colors">
 					Login
 				</button>
 				<p>
-					<a href="/forgot-password" class="text-blue-500 hover:underline">Forgot password?</a>
+					<a href="/forgot-password" class="hover:underline text-blue-500">Forgot password?</a>
 				</p>
 				<p>
-					Don't have an account? <a href="/signup" class="text-blue-500 hover:underline">Signup</a>
+					Don't have an account? <a href="/signup" class="hover:underline text-blue-500">Signup</a>
 				</p>
 			</form>
 		</main>
@@ -111,42 +111,42 @@ templ login_page(messages Messages) {
 
 templ profile_page(messages Messages, user UserMetadata) {
 	@common.Base("Profile") {
-		<main class="mx-auto container space-y-2 px-4 py-4">
-			<h1 class="text-2xl font-bold">Profile</h1>
-			<div class="empty:hidden bg-green-200 text-green-600 dark:bg-green-900 dark:text-green-200 p-4 rounded-md">
+		<main class="container mx-auto px-4 py-4 space-y-2">
+			<h1 class="font-bold text-2xl">Profile</h1>
+			<div class="bg-green-200 dark:bg-green-900 dark:text-green-200 empty:hidden p-4 rounded-md text-green-600">
 				{ common.TernaryIf(messages.Success != "", "🟢 " + messages.Success, "") }
 			</div>
-			<div class="empty:hidden bg-red-200 text-red-600 dark:bg-red-900 dark:text-red-200 p-4 rounded-md">
+			<div class="bg-red-200 dark:bg-red-900 dark:text-red-200 empty:hidden p-4 rounded-md text-red-600">
 				{ common.TernaryIf(messages.Error != "", "🔴 " + messages.Error, "") }
 			</div>
 			<p>You are logged in as <u>{ user.Email }</u></p>
-			<p>Are you an admin? <a href="/admin" class="text-blue-500 hover:underline">Go to admin</a></p>
+			<p>Are you an admin? <a href="/admin" class="hover:underline text-blue-500">Go to admin</a></p>
 			<form
 				action="/change-password"
 				method="post"
-				class="space-y-4 shadow-md p-4 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-900"
+				class="border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-4 rounded-md shadow-md space-y-4"
 			>
 				<p>
 					Change your password here.
 				</p>
 				<div class="flex flex-col gap-2">
 					<label for="password">Current Password</label>
-					<input type="password" name="password" id="password" class="border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-800 p-2 rounded-md"/>
+					<input type="password" name="password" id="password" class="border-2 border-gray-300 dark:bg-gray-800 dark:border-gray-600 p-2 rounded-md"/>
 				</div>
 				<div class="flex flex-col gap-2">
 					<label for="new-password">New Password</label>
-					<input type="password" name="new-password" id="new-password" class="border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-800 p-2 rounded-md"/>
+					<input type="password" name="new-password" id="new-password" class="border-2 border-gray-300 dark:bg-gray-800 dark:border-gray-600 p-2 rounded-md"/>
 				</div>
 				<div class="flex flex-col gap-2">
 					<label for="confirm-password">Confirm Password</label>
-					<input type="password" name="confirm-password" id="confirm-password" class="border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-800 p-2 rounded-md"/>
+					<input type="password" name="confirm-password" id="confirm-password" class="border-2 border-gray-300 dark:bg-gray-800 dark:border-gray-600 p-2 rounded-md"/>
 				</div>
-				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
+				<button class="bg-blue-500 duration-300 hover:bg-blue-600 p-2 rounded-md text-white transition-colors">
 					Change Password
 				</button>
 			</form>
 			<div class="flex justify-end">
-				<a href="/logout" class="text-red-500 hover:bg-red-500 hover:text-white p-2 rounded-md transition-colors duration-300">Logout</a>
+				<a href="/logout" class="duration-300 hover:bg-red-500 hover:text-white p-2 rounded-md text-red-500 transition-colors">Logout</a>
 			</div>
 		</main>
 	}
@@ -154,12 +154,12 @@ templ profile_page(messages Messages, user UserMetadata) {
 
 templ forgot_password_page(messages Messages) {
 	@common.Base("Forgot Password") {
-		<main class="mx-auto container space-y-2 px-4 py-4">
-			<h1 class="text-2xl font-bold">Forgot Password</h1>
-			<div class="empty:hidden bg-green-200 text-green-600 dark:bg-green-900 dark:text-green-200 p-4 rounded-md">
+		<main class="container mx-auto px-4 py-4 space-y-2">
+			<h1 class="font-bold text-2xl">Forgot Password</h1>
+			<div class="bg-green-200 dark:bg-green-900 dark:text-green-200 empty:hidden p-4 rounded-md text-green-600">
 				{ common.TernaryIf(messages.Success != "", "🟢 " + messages.Success, "") }
 			</div>
-			<div class="empty:hidden bg-red-200 text-red-600 dark:bg-red-900 dark:text-red-200 p-4 rounded-md">
+			<div class="bg-red-200 dark:bg-red-900 dark:text-red-200 empty:hidden p-4 rounded-md text-red-600">
 				{ common.TernaryIf(messages.Error != "", "🔴 " + messages.Error, "") }
 			</div>
 			<form
@@ -171,15 +171,15 @@ templ forgot_password_page(messages Messages) {
 					<label class="block" for="email">
 						Email
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">Make sure to use a valid email address.</span>
+						<span class="dark:text-gray-400 text-gray-500 text-sm">Make sure to use a valid email address.</span>
 					</label>
-					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="email" id="email"/>
+					<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="text" name="email" id="email"/>
 				</div>
-				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
+				<button class="bg-blue-500 duration-300 hover:bg-blue-600 p-2 rounded-md text-white transition-colors">
 					Reset Password
 				</button>
 				<p>
-					Remembered your password? <a href="/login" class="text-blue-500 hover:underline">Login</a>
+					Remembered your password? <a href="/login" class="hover:underline text-blue-500">Login</a>
 				</p>
 			</form>
 		</main>
@@ -188,12 +188,12 @@ templ forgot_password_page(messages Messages) {
 
 templ reset_password_page(messages Messages, token string) {
 	@common.Base("Reset Password") {
-		<main class="mx-auto container space-y-2 px-4 py-4">
-			<h1 class="text-2xl font-bold">Reset Password</h1>
-			<div class="empty:hidden bg-green-200 text-green-600 dark:bg-green-900 dark:text-green-200 p-4 rounded-md">
+		<main class="container mx-auto px-4 py-4 space-y-2">
+			<h1 class="font-bold text-2xl">Reset Password</h1>
+			<div class="bg-green-200 dark:bg-green-900 dark:text-green-200 empty:hidden p-4 rounded-md text-green-600">
 				{ common.TernaryIf(messages.Success != "", "🟢 " + messages.Success, "") }
 			</div>
-			<div class="empty:hidden bg-red-200 text-red-600 dark:bg-red-900 dark:text-red-200 p-4 rounded-md">
+			<div class="bg-red-200 dark:bg-red-900 dark:text-red-200 empty:hidden p-4 rounded-md text-red-600">
 				{ common.TernaryIf(messages.Error != "", "🔴 " + messages.Error, "") }
 			</div>
 			<form
@@ -206,15 +206,15 @@ templ reset_password_page(messages Messages, token string) {
 					<label class="block" for="email">
 						Email
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">Make sure to use a valid email address.</span>
+						<span class="dark:text-gray-400 text-gray-500 text-sm">Make sure to use a valid email address.</span>
 					</label>
-					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="email" id="email"/>
+					<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="text" name="email" id="email"/>
 				</div>
 				<div>
 					<label class="block" for="password">New Password</label>
-					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="password" name="password" id="password"/>
+					<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="password" name="password" id="password"/>
 				</div>
-				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
+				<button class="bg-blue-500 duration-300 hover:bg-blue-600 p-2 rounded-md text-white transition-colors">
 					Reset Password
 				</button>
 			</form>
@@ -239,43 +239,43 @@ type admin_props struct {
 
 templ admin_page(props admin_props) {
 	@common.Base("Admin") {
-		<div class="mx-auto container flex flex-col md:flex-row md:gap-4">
-			<main class="space-y-6 divide-y divide-gray-200 dark:divide-gray-600 px-4 py-4 order-2 md:order-1 md:flex-1">
-				<section class="space-y-2 py-4">
-					<h1 class="text-2xl font-bold">Users</h1>
-					<div class="empty:hidden bg-green-200 text-green-600 dark:bg-green-900 dark:text-green-200 p-4 rounded-md">
+		<div class="container flex flex-col md:flex-row md:gap-4 mx-auto">
+			<main class="dark:divide-gray-600 divide-gray-200 divide-y md:flex-1 md:order-1 order-2 px-4 py-4 space-y-6">
+				<section class="py-4 space-y-2">
+					<h1 class="font-bold text-2xl">Users</h1>
+					<div class="bg-green-200 dark:bg-green-900 dark:text-green-200 empty:hidden p-4 rounded-md text-green-600">
 						{ common.TernaryIf(props.Messages.Success != "", "🟢 " + props.Messages.Success, "") }
 					</div>
-					<div class="empty:hidden bg-red-200 text-red-600 dark:bg-red-900 dark:text-red-200 p-4 rounded-md">
+					<div class="bg-red-200 dark:bg-red-900 dark:text-red-200 empty:hidden p-4 rounded-md text-red-600">
 						{ common.TernaryIf(props.Messages.Error != "", "🔴 " + props.Messages.Error, "") }
 					</div>
 					if len(props.Users) == 0 {
-						<div class="bg-red-200 text-red-600 dark:bg-red-900 dark:text-red-200 p-4 rounded-md">
+						<div class="bg-red-200 dark:bg-red-900 dark:text-red-200 p-4 rounded-md text-red-600">
 							<p>No users found.</p>
 						</div>
 					} else {
-						<table class="w-full table-auto">
+						<table class="table-auto w-full">
 							<thead>
 								<tr class="bg-gray-100 dark:bg-gray-800">
-									<th class="p-1 border border-gray-200 dark:border-gray-600">ID</th>
-									<th class="p-1 border border-gray-200 dark:border-gray-600">Email</th>
-									<th class="p-1 border border-gray-200 dark:border-gray-600">Created At</th>
-									<th class="p-1 border border-gray-200 dark:border-gray-600">Actions</th>
+									<th class="border border-gray-200 dark:border-gray-600 p-1">ID</th>
+									<th class="border border-gray-200 dark:border-gray-600 p-1">Email</th>
+									<th class="border border-gray-200 dark:border-gray-600 p-1">Created At</th>
+									<th class="border border-gray-200 dark:border-gray-600 p-1">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
 								for _, user := range props.Users {
-									<tr class="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700">
-										<td class="p-1 border border-gray-200 dark:border-gray-600">{ strconv.Itoa(user.ID) }</td>
-										<td class="p-1 border border-gray-200 dark:border-gray-600">
+									<tr class="dark:even:bg-gray-700 dark:odd:bg-gray-800 even:bg-gray-50 odd:bg-white">
+										<td class="border border-gray-200 dark:border-gray-600 p-1">{ strconv.Itoa(user.ID) }</td>
+										<td class="border border-gray-200 dark:border-gray-600 p-1">
 											{ user.Email }
 											if props.Me.ID == user.ID {
 												(you)
 											}
 										</td>
-										<td class="p-1 border border-gray-200 dark:border-gray-600">{ user.CreatedAt.Format(time.RFC822) }</td>
-										<td class="p-1 border border-gray-200 dark:border-gray-600">
-											<a href={ templ.SafeURL("/admin/users/" + strconv.Itoa(user.ID)) } class="text-blue-500 hover:underline">Show</a>
+										<td class="border border-gray-200 dark:border-gray-600 p-1">{ user.CreatedAt.Format(time.RFC822) }</td>
+										<td class="border border-gray-200 dark:border-gray-600 p-1">
+											<a href={ templ.SafeURL("/admin/users/" + strconv.Itoa(user.ID)) } class="hover:underline text-blue-500">Show</a>
 										</td>
 									</tr>
 								}
@@ -283,17 +283,17 @@ templ admin_page(props admin_props) {
 						</table>
 					}
 				</section>
-				<section class="space-y-2 py-4">
-					<h2 class="text-2xl font-bold">Signup Codes</h2>
-					<table class="w-full table-auto">
+				<section class="py-4 space-y-2">
+					<h2 class="font-bold text-2xl">Signup Codes</h2>
+					<table class="table-auto w-full">
 						<thead class="bg-gray-100 dark:bg-gray-800">
 							<tr class="bg-gray-100 dark:bg-gray-800">
-								<th class="p-1 border border-gray-200 dark:border-gray-600">Code</th>
-								<th class="p-1 border border-gray-200 dark:border-gray-600">Left Uses</th>
-								<th class="p-1 border border-gray-200 dark:border-gray-600">Created At</th>
-								<th class="p-1 border border-gray-200 dark:border-gray-600">Actions</th>
+								<th class="border border-gray-200 dark:border-gray-600 p-1">Code</th>
+								<th class="border border-gray-200 dark:border-gray-600 p-1">Left Uses</th>
+								<th class="border border-gray-200 dark:border-gray-600 p-1">Created At</th>
+								<th class="border border-gray-200 dark:border-gray-600 p-1">Actions</th>
 								if len(props.SignupCodes)> 0 {
-									<th class="p-1 border border-gray-200 dark:border-gray-600">
+									<th class="border border-gray-200 dark:border-gray-600 p-1">
 										<input
 											type="checkbox"
 											name="select-all"
@@ -305,25 +305,25 @@ templ admin_page(props admin_props) {
 						</thead>
 						<tbody>
 							if len(props.SignupCodes) == 0 {
-								<tr class="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700">
-									<td class="p-1 border border-gray-200 dark:border-gray-600" colspan="5">No signup codes found.</td>
+								<tr class="dark:even:bg-gray-700 dark:odd:bg-gray-800 even:bg-gray-50 odd:bg-white">
+									<td class="border border-gray-200 dark:border-gray-600 p-1" colspan="5">No signup codes found.</td>
 								</tr>
 							} else {
 								for _, code := range props.SignupCodes {
-									<tr class="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700">
-										<td class="p-1 border border-gray-200 dark:border-gray-600">{ strings.ToUpper(code.Code) }</td>
-										<td class="p-1 border border-gray-200 dark:border-gray-600">{ strconv.Itoa(code.Uses) }</td>
-										<td class="p-1 border border-gray-200 dark:border-gray-600">{ code.CreatedAt.Format(time.RFC822) }</td>
-										<td class="p-1 border border-gray-200 dark:border-gray-600">
+									<tr class="dark:even:bg-gray-700 dark:odd:bg-gray-800 even:bg-gray-50 odd:bg-white">
+										<td class="border border-gray-200 dark:border-gray-600 p-1">{ strings.ToUpper(code.Code) }</td>
+										<td class="border border-gray-200 dark:border-gray-600 p-1">{ strconv.Itoa(code.Uses) }</td>
+										<td class="border border-gray-200 dark:border-gray-600 p-1">{ code.CreatedAt.Format(time.RFC822) }</td>
+										<td class="border border-gray-200 dark:border-gray-600 p-1">
 											<a
-												class="text-blue-500 hover:underline"
+												class="hover:underline text-blue-500"
 												href={ templ.SafeURL("/admin/signup-codes/" + strings.ToLower(code.Code)) }
 											>
 												Edit
 											</a>
 										</td>
 										if code.Uses > 0 {
-											<td class="p-1 border border-gray-200 dark:border-gray-600 text-center">
+											<td class="border border-gray-200 dark:border-gray-600 p-1 text-center">
 												<input
 													type="checkbox"
 													name="code-checkbox"
@@ -337,11 +337,11 @@ templ admin_page(props admin_props) {
 						</tbody>
 					</table>
 					<div class="flex gap-2 py-2">
-						<a class="text-blue-500 hover:underline" href="/admin/signup-codes/new">New code</a>
+						<a class="hover:underline text-blue-500" href="/admin/signup-codes/new">New code</a>
 						if len(props.SignupCodes) > 0 {
 							<form action="/admin/signup-codes/delete" method="post">
 								<input type="hidden" name="codes" id="codes" value=""/>
-								<button class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md transition-colors duration-300">
+								<button class="bg-red-500 duration-300 hover:bg-red-600 p-2 rounded-md text-white transition-colors">
 									Delete selected
 								</button>
 							</form>
@@ -349,37 +349,37 @@ templ admin_page(props admin_props) {
 					</div>
 					@common.Script("checkboxes.js")
 				</section>
-				<section class="space-y-2 py-4">
-					<h2 class="text-2xl font-bold">SMTP (Mailer) Settings</h2>
+				<section class="py-4 space-y-2">
+					<h2 class="font-bold text-2xl">SMTP (Mailer) Settings</h2>
 					<p>
 						You can change the SMTP settings here. If you leave the fields empty, 
 						the app will avoid sending emails and you'll get an error in the logs.
 					</p>
-					<form action="/admin/smtp" method="post" class="space-y-4 shadow-md p-4 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-900">
+					<form action="/admin/smtp" method="post" class="border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-4 rounded-md shadow-md space-y-4">
 						<div>
 							<label class="block" for="host">Host</label>
-							<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="host" id="host" value={ props.SMTPSettings.Host }/>
+							<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="text" name="host" id="host" value={ props.SMTPSettings.Host }/>
 						</div>
 						<div>
 							<label class="block" for="port">Port</label>
-							<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="port" id="port" value={ props.SMTPSettings.Port }/>
+							<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="text" name="port" id="port" value={ props.SMTPSettings.Port }/>
 						</div>
 						<div>
 							<label class="block" for="username">Username</label>
-							<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="username" id="username" value={ props.SMTPSettings.Username }/>
+							<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="text" name="username" id="username" value={ props.SMTPSettings.Username }/>
 						</div>
 						<div>
 							<label class="block" for="password">Password</label>
-							<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="password" name="password" id="password" value={ props.SMTPSettings.Password }/>
+							<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="password" name="password" id="password" value={ props.SMTPSettings.Password }/>
 						</div>
-						<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
+						<button class="bg-blue-500 duration-300 hover:bg-blue-600 p-2 rounded-md text-white transition-colors">
 							Update SMTP Settings
 						</button>
 					</form>
 				</section>
 			</main>
-			<aside class="space-y-2 px-4 py-4 order-1 md:order-2 md:w-1/4 md:border-l md:border-gray-200 dark:md:border-gray-600 md:pl-6">
-				<h2 class="text-xl font-bold">Welcome!</h2>
+			<aside class="dark:md:border-gray-600 md:border-gray-200 md:border-l md:order-2 md:pl-6 md:w-1/4 order-1 px-4 py-4 space-y-2">
+				<h2 class="font-bold text-xl">Welcome!</h2>
 				<p>Hi, <strong>{ props.Me.Email }</strong>.</p>
 				<p>
 					This is the admin page, it allows you to manage users, signup codes and all things related to the app.
@@ -387,7 +387,7 @@ templ admin_page(props admin_props) {
 				<p>
 					You can also logout if you're done using the button below.
 				</p>
-				<a class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md transition-colors duration-3000" href="/logout">
+				<a class="bg-red-500 duration-3000 hover:bg-red-600 p-2 rounded-md text-white transition-colors" href="/logout">
 					Logout
 				</a>
 			</aside>
@@ -397,19 +397,19 @@ templ admin_page(props admin_props) {
 
 templ user_page(user UserMetadata, messages Messages, newPassword string) {
 	@common.Base("Admin - User") {
-		<main class="mx-auto container space-y-2 px-4 py-4">
-			<div class="empty:hidden bg-green-200 text-green-600 dark:bg-green-900 dark:text-green-200 p-4 rounded-md">
+		<main class="container mx-auto px-4 py-4 space-y-2">
+			<div class="bg-green-200 dark:bg-green-900 dark:text-green-200 empty:hidden p-4 rounded-md text-green-600">
 				{ common.TernaryIf(messages.Success != "", "🟢 " + messages.Success, "") }
 			</div>
-			<div class="empty:hidden bg-red-200 text-red-600 dark:bg-red-900 dark:text-red-200 p-4 rounded-md">
+			<div class="bg-red-200 dark:bg-red-900 dark:text-red-200 empty:hidden p-4 rounded-md text-red-600">
 				{ common.TernaryIf(messages.Error != "", "🔴 " + messages.Error, "") }
 			</div>
-			<h1 class="text-2xl font-bold">Admin - User</h1>
+			<h1 class="font-bold text-2xl">Admin - User</h1>
 			<p>
 				You are looking at the user <strong>{ user.Email }</strong>.
 			</p>
 			if newPassword != "" {
-				<div class="space-y-4 shadow-md p-4 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-900">
+				<div class="border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-4 rounded-md shadow-md space-y-4">
 					<p>
 						New password: <strong>{ newPassword }</strong>
 					</p>
@@ -423,13 +423,13 @@ templ user_page(user UserMetadata, messages Messages, newPassword string) {
 					hx-swap="outerHTML"
 					action={ templ.SafeURL("/admin/users/" + strconv.Itoa(user.ID) + "/reset-password") }
 					method="post"
-					class="space-y-4 shadow-md p-4 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-900"
+					class="border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-4 rounded-md shadow-md space-y-4"
 				>
 					<p>
 						You can reset the user's password here. You'll get a new random password in here
 						which you can share with the user. Remind them to change it after logging in.
 					</p>
-					<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
+					<button class="bg-blue-500 duration-300 hover:bg-blue-600 p-2 rounded-md text-white transition-colors">
 						Reset Password
 					</button>
 				</form>
@@ -440,12 +440,12 @@ templ user_page(user UserMetadata, messages Messages, newPassword string) {
 
 templ new_signup_codes_page(messages Messages) {
 	@common.Base("Admin - New Signup Code") {
-		<main class="mx-auto container space-y-2 px-4 py-4">
-			<h1 class="text-2xl font-bold">Admin - New Signup Code</h1>
-			<div class="empty:hidden bg-green-200 text-green-600 dark:bg-green-900 dark:text-green-200 p-4 rounded-md">
+		<main class="container mx-auto px-4 py-4 space-y-2">
+			<h1 class="font-bold text-2xl">Admin - New Signup Code</h1>
+			<div class="bg-green-200 dark:bg-green-900 dark:text-green-200 empty:hidden p-4 rounded-md text-green-600">
 				{ common.TernaryIf(messages.Success != "", "🟢 " + messages.Success, "") }
 			</div>
-			<div class="empty:hidden bg-red-200 text-red-600 dark:bg-red-900 dark:text-red-200 p-4 rounded-md">
+			<div class="bg-red-200 dark:bg-red-900 dark:text-red-200 empty:hidden p-4 rounded-md text-red-600">
 				{ common.TernaryIf(messages.Error != "", "🔴 " + messages.Error, "") }
 			</div>
 			<form
@@ -457,19 +457,19 @@ templ new_signup_codes_page(messages Messages) {
 					<label class="block" for="code">
 						Code
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">The code to use to sign up.</span>
+						<span class="dark:text-gray-400 text-gray-500 text-sm">The code to use to sign up.</span>
 					</label>
-					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="code" id="code"/>
+					<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="text" name="code" id="code"/>
 				</div>
 				<div>
 					<label class="block" for="uses">
 						Uses
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">How many times can this code be used?</span>
+						<span class="dark:text-gray-400 text-gray-500 text-sm">How many times can this code be used?</span>
 					</label>
-					<input class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700" type="text" name="uses" id="uses"/>
+					<input class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full" type="text" name="uses" id="uses"/>
 				</div>
-				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
+				<button class="bg-blue-500 duration-300 hover:bg-blue-600 p-2 rounded-md text-white transition-colors">
 					Create Code
 				</button>
 			</form>
@@ -479,13 +479,13 @@ templ new_signup_codes_page(messages Messages) {
 
 templ edit_signup_codes_page(messages Messages, code SignupCode) {
 	@common.Base("Admin - Edit Signup Code") {
-		<main class="mx-auto container space-y-2 px-4 py-4">
-			<a href="/admin" class="text-blue-500 hover:underline">Back to Admin</a>
-			<h1 class="text-2xl font-bold">Admin - Edit Signup Code</h1>
-			<div class="empty:hidden bg-green-200 text-green-600 dark:bg-green-900 dark:text-green-200 p-4 rounded-md">
+		<main class="container mx-auto px-4 py-4 space-y-2">
+			<a href="/admin" class="hover:underline text-blue-500">Back to Admin</a>
+			<h1 class="font-bold text-2xl">Admin - Edit Signup Code</h1>
+			<div class="bg-green-200 dark:bg-green-900 dark:text-green-200 empty:hidden p-4 rounded-md text-green-600">
 				{ common.TernaryIf(messages.Success != "", "🟢 " + messages.Success, "") }
 			</div>
-			<div class="empty:hidden bg-red-200 text-red-600 dark:bg-red-900 dark:text-red-200 p-4 rounded-md">
+			<div class="bg-red-200 dark:bg-red-900 dark:text-red-200 empty:hidden p-4 rounded-md text-red-600">
 				{ common.TernaryIf(messages.Error != "", "🔴 " + messages.Error, "") }
 			</div>
 			<form
@@ -497,10 +497,10 @@ templ edit_signup_codes_page(messages Messages, code SignupCode) {
 					<label class="block" for="code">
 						Code
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">The code to use to sign up.</span>
+						<span class="dark:text-gray-400 text-gray-500 text-sm">The code to use to sign up.</span>
 					</label>
 					<input
-						class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 disabled:opacity-50 disabled:bg-gray-200 disabled:border-gray-200 dark:disabled:bg-gray-800 dark:disabled:border-gray-600"
+						class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:disabled:bg-gray-800 dark:disabled:border-gray-600 disabled:bg-gray-200 disabled:border-gray-200 disabled:opacity-50 p-2 rounded-md w-full"
 						type="text"
 						disabled
 						name="code"
@@ -512,22 +512,22 @@ templ edit_signup_codes_page(messages Messages, code SignupCode) {
 					<label class="block" for="uses">
 						Uses
 						<br/>
-						<span class="text-sm text-gray-500 dark:text-gray-400">How many times can this code be used?</span>
+						<span class="dark:text-gray-400 text-gray-500 text-sm">How many times can this code be used?</span>
 					</label>
 					<input
-						class="block w-full p-2 rounded-md border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+						class="block border-2 border-gray-300 dark:bg-gray-700 dark:border-gray-600 p-2 rounded-md w-full"
 						type="text"
 						name="uses"
 						id="uses"
 						value={ strconv.Itoa(code.Uses) }
 					/>
 				</div>
-				<button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-md transition-colors duration-300">
+				<button class="bg-blue-500 duration-300 hover:bg-blue-600 p-2 rounded-md text-white transition-colors">
 					Update Code
 				</button>
 			</form>
 			<form action={ templ.SafeURL("/admin/signup-codes/delete/" + code.Code) } method="post">
-				<button class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-md transition-colors duration-300">
+				<button class="bg-red-500 duration-300 hover:bg-red-600 p-2 rounded-md text-white transition-colors">
 					Delete Code
 				</button>
 			</form>
