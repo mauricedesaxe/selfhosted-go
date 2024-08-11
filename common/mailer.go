@@ -6,8 +6,6 @@ import (
 	"net"
 	"net/smtp"
 	"strings"
-
-	"github.com/jmoiron/sqlx"
 )
 
 // This file is responsible for handling the mailer configuration and sending emails.
@@ -25,27 +23,10 @@ import (
 // This is a tradeoff we are willing to make to optimize for self-hosting.
 
 var Mailer *MailerT
-var MailDb *sqlx.DB
 
 func init() {
 	var err error
-	MailDb, err = sqlx.Open("sqlite3", "./db/mail.db")
-	if err != nil {
-		log.Fatalf("Error opening database: %v", err)
-	}
-
-	// optimize the database
-	optimizationStmts := `
-    PRAGMA journal_mode = WAL;
-    PRAGMA synchronous = NORMAL;
-    PRAGMA cache_size = -64000;  -- 64MB
-    PRAGMA temp_store = MEMORY;`
-	_, err = MailDb.Exec(optimizationStmts)
-	if err != nil {
-		log.Fatalf("Error optimizing database: %v", err)
-	}
-
-	_, err = MailDb.Exec(`
+	_, err = Db.Exec(`
 	CREATE TABLE IF NOT EXISTS mailer_config (
 		id INTEGER PRIMARY KEY CHECK (id = 1),
 		host TEXT,
@@ -59,7 +40,7 @@ func init() {
 
 	// Load the mailer configuration from the database
 	// If the mailer is not configured, we will just return
-	err = MailDb.Get(&Mailer, "SELECT * FROM mailer_config LIMIT 1")
+	err = Db.Get(&Mailer, "SELECT * FROM mailer_config LIMIT 1")
 	if err != nil {
 		log.Printf("Error getting mailer configuration: %v", err)
 		return
@@ -84,7 +65,7 @@ func init() {
 //		Password: "password",
 //	})
 func NewMailer(config *MailerT) error {
-	_, err := MailDb.Exec(`
+	_, err := Db.Exec(`
 	INSERT INTO mailer_config (id, host, port, username, password) VALUES (1, ?, ?, ?, ?)
 	ON CONFLICT(id) DO UPDATE SET
 	host = excluded.host,

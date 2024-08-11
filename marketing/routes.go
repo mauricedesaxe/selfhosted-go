@@ -25,7 +25,7 @@ func AddRoutes(app *fiber.App) {
 		}
 
 		var email string
-		err = auth.AuthDb.Get(&email, `SELECT email FROM users WHERE id = $1`, userId)
+		err = common.Db.Get(&email, `SELECT email FROM users WHERE id = $1`, userId)
 		if err != nil {
 			return c.Redirect("/login?redirect=/protected&error=Please+log+in+to+view+this+page")
 		}

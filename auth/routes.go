@@ -106,7 +106,7 @@ func (m *AuthHandlers) post_signup(c *fiber.Ctx) error {
 
 	// check if the email is already taken
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM users WHERE email = ?`, email)
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM users WHERE email = ?`, email)
 	if err != nil {
 		return c.Redirect("/signup?error=Email already taken")
 	}
@@ -115,7 +115,7 @@ func (m *AuthHandlers) post_signup(c *fiber.Ctx) error {
 	var signupCode struct {
 		Uses int `db:"uses"`
 	}
-	err = AuthDb.Get(&signupCode, `SELECT uses FROM signup_codes WHERE code = ? AND uses > 0`, strings.ToLower(code))
+	err = common.Db.Get(&signupCode, `SELECT uses FROM signup_codes WHERE code = ? AND uses > 0`, strings.ToLower(code))
 	if err != nil {
 		return c.Redirect("/signup?error=Invalid signup code")
 	}
@@ -127,21 +127,21 @@ func (m *AuthHandlers) post_signup(c *fiber.Ctx) error {
 	}
 
 	// insert the user into the database
-	_, err = AuthDb.Exec(`INSERT INTO users (email, password) VALUES (?, ?)`, email, string(hashedPassword))
+	_, err = common.Db.Exec(`INSERT INTO users (email, password) VALUES (?, ?)`, email, string(hashedPassword))
 	if err != nil {
 		return c.Redirect("/signup?error=Can't insert user into database")
 	}
 
 	// if first user ever, give admin role
 	if count == 0 {
-		_, err = AuthDb.Exec(`INSERT INTO user_roles (user_id, role) VALUES ((SELECT id FROM users WHERE email = ?), "admin")`, email)
+		_, err = common.Db.Exec(`INSERT INTO user_roles (user_id, role) VALUES ((SELECT id FROM users WHERE email = ?), "admin")`, email)
 		if err != nil {
 			return c.Redirect("/signup?error=Can't insert user role into database")
 		}
 	}
 
 	// decrement the uses of the signup code
-	_, err = AuthDb.Exec(`UPDATE signup_codes SET uses = uses - 1 WHERE code = ?`, strings.ToLower(code))
+	_, err = common.Db.Exec(`UPDATE signup_codes SET uses = uses - 1 WHERE code = ?`, strings.ToLower(code))
 	if err != nil {
 		return c.Redirect("/signup?error=Can't decrement signup code uses")
 	}
@@ -150,7 +150,7 @@ func (m *AuthHandlers) post_signup(c *fiber.Ctx) error {
 	var user struct {
 		ID int `db:"id"`
 	}
-	err = AuthDb.Get(&user, `SELECT id FROM users WHERE email = ?`, email)
+	err = common.Db.Get(&user, `SELECT id FROM users WHERE email = ?`, email)
 	if err != nil {
 		return c.Redirect("/signup?error=Can't get user ID")
 	}
@@ -218,7 +218,7 @@ func (m *AuthHandlers) post_login(c *fiber.Ctx) error {
 		Password string `db:"password"`
 	}
 	var user User
-	err = AuthDb.Get(&user, `SELECT id, password FROM users WHERE email = ?`, email)
+	err = common.Db.Get(&user, `SELECT id, password FROM users WHERE email = ?`, email)
 	if err != nil {
 		return c.Redirect("/login?error=Can't find user with the provided email")
 	}
@@ -259,7 +259,7 @@ func (m *AuthHandlers) get_profile(c *fiber.Ctx) error {
 
 	// get the user's metadata from the database
 	var user UserMetadata
-	err = AuthDb.Get(&user, `SELECT id, email, created_at FROM users WHERE id = ?`, userId.(int))
+	err = common.Db.Get(&user, `SELECT id, email, created_at FROM users WHERE id = ?`, userId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user metadata")
 	}
@@ -303,7 +303,7 @@ func (m *AuthHandlers) post_change_pass(c *fiber.Ctx) error {
 	var user struct {
 		Password string `db:"password"`
 	}
-	err = AuthDb.Get(&user, `SELECT password FROM users WHERE id = ?`, userId.(int))
+	err = common.Db.Get(&user, `SELECT password FROM users WHERE id = ?`, userId.(int))
 	if err != nil {
 		return c.Redirect("/change-password?error=Can't get user password")
 	}
@@ -321,7 +321,7 @@ func (m *AuthHandlers) post_change_pass(c *fiber.Ctx) error {
 	}
 
 	// update the user's password
-	_, err = AuthDb.Exec(`UPDATE users SET password = ? WHERE id = ?`, string(hashedPassword), userId.(int))
+	_, err = common.Db.Exec(`UPDATE users SET password = ? WHERE id = ?`, string(hashedPassword), userId.(int))
 	if err != nil {
 		return c.Redirect("/change-password?error=Can't update user password")
 	}
@@ -371,14 +371,14 @@ func (m *AuthHandlers) post_forgot_pass(c *fiber.Ctx) error {
 
 	// check if the user exists in the database
 	var user UserMetadata
-	err = AuthDb.Get(&user, `SELECT id, email FROM users WHERE email = ?`, email)
+	err = common.Db.Get(&user, `SELECT id, email FROM users WHERE email = ?`, email)
 	if err != nil {
 		return c.Redirect("/forgot-password?error=Can't find user with the provided email")
 	}
 
 	// generate a unique token and save it in the database
 	token := uuid.New().String()
-	_, err = AuthDb.Exec(`INSERT INTO password_resets (user_id, token) VALUES (?, ?)`, user.ID, token)
+	_, err = common.Db.Exec(`INSERT INTO password_resets (user_id, token) VALUES (?, ?)`, user.ID, token)
 	if err != nil {
 		return c.Redirect("/forgot-password?error=Can't insert password reset token into database")
 	}
@@ -424,7 +424,7 @@ func (m *AuthHandlers) get_reset_pass(c *fiber.Ctx) error {
 		UserID int `db:"user_id"`
 	}
 	var passwordReset PasswordReset
-	err = AuthDb.Get(&passwordReset, `SELECT user_id FROM password_resets WHERE token = ? AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)`, token)
+	err = common.Db.Get(&passwordReset, `SELECT user_id FROM password_resets WHERE token = ? AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)`, token)
 	if err != nil {
 		return c.Redirect("/forgot-password?error=Invalid token")
 	}
@@ -465,7 +465,7 @@ func (m *AuthHandlers) post_reset_pass(c *fiber.Ctx) error {
 	var passwordReset struct {
 		UserID int `db:"user_id"`
 	}
-	err = AuthDb.Get(&passwordReset, `SELECT user_id FROM password_resets WHERE token = ? AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)`, token)
+	err = common.Db.Get(&passwordReset, `SELECT user_id FROM password_resets WHERE token = ? AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)`, token)
 	if err != nil {
 		return c.Redirect("/reset-password?token=" + token + "&error=Invalid token")
 	}
@@ -474,7 +474,7 @@ func (m *AuthHandlers) post_reset_pass(c *fiber.Ctx) error {
 	var user struct {
 		Password string `db:"password"`
 	}
-	err = AuthDb.Get(&user, `SELECT password FROM users WHERE id = ?`, passwordReset.UserID)
+	err = common.Db.Get(&user, `SELECT password FROM users WHERE id = ?`, passwordReset.UserID)
 	if err != nil {
 		return c.Redirect("/reset-password?token=" + token + "&error=Can't get user password")
 	}
@@ -487,13 +487,13 @@ func (m *AuthHandlers) post_reset_pass(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Redirect("/reset-password?token=" + token + "&error=Can't hash password")
 	}
-	_, err = AuthDb.Exec(`UPDATE users SET password = ? WHERE id = ?`, string(hashedPassword), passwordReset.UserID)
+	_, err = common.Db.Exec(`UPDATE users SET password = ? WHERE id = ?`, string(hashedPassword), passwordReset.UserID)
 	if err != nil {
 		return c.Redirect("/reset-password?token=" + token + "&error=Can't update user password")
 	}
 
 	// delete the token from the database
-	_, err = AuthDb.Exec(`DELETE FROM password_resets WHERE token = ?`, token)
+	_, err = common.Db.Exec(`DELETE FROM password_resets WHERE token = ?`, token)
 	if err != nil {
 		return c.Redirect("/reset-password?token=" + token + "&error=Can't delete password reset token")
 	}
@@ -533,7 +533,7 @@ func (m *AdminHandlers) get_admin(c *fiber.Ctx) error {
 
 	// check if the user has the admin role
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user roles")
 	}
@@ -543,28 +543,28 @@ func (m *AdminHandlers) get_admin(c *fiber.Ctx) error {
 
 	// get user from db
 	var me UserMetadata
-	err = AuthDb.Get(&me, `SELECT id, email, created_at FROM users WHERE id = ?`, userId.(int))
+	err = common.Db.Get(&me, `SELECT id, email, created_at FROM users WHERE id = ?`, userId.(int))
 	if err != nil {
 		return common.RenderTempl(c, common.ErrorPage("💥 500", "Failed to get user metadata:", err.Error()))
 	}
 
 	// get all users from the database
 	var users []UserMetadata
-	err = AuthDb.Select(&users, `SELECT id, email, created_at FROM users`)
+	err = common.Db.Select(&users, `SELECT id, email, created_at FROM users`)
 	if err != nil {
 		return common.RenderTempl(c, common.ErrorPage("💥 500", "Failed to get users:", err.Error()))
 	}
 
 	// get all signup codes from the database
 	var signupCodes []SignupCode
-	err = AuthDb.Select(&signupCodes, `SELECT code, uses, created_at FROM signup_codes`)
+	err = common.Db.Select(&signupCodes, `SELECT code, uses, created_at FROM signup_codes`)
 	if err != nil {
 		return common.RenderTempl(c, common.ErrorPage("💥 500", "Failed to get signup codes:", err.Error()))
 	}
 
 	// get SMTP settings
 	var smtpSettings SMTPSettings
-	err = common.MailDb.Get(&smtpSettings, `SELECT host, port, username, password FROM mailer_config`)
+	err = common.Db.Get(&smtpSettings, `SELECT host, port, username, password FROM mailer_config`)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			smtpSettings = SMTPSettings{}
@@ -601,7 +601,7 @@ func (m *AdminHandlers) post_smtp(c *fiber.Ctx) error {
 
 	// check if the user has the admin role
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user roles")
 	}
@@ -628,7 +628,7 @@ func (m *AdminHandlers) post_smtp(c *fiber.Ctx) error {
 	}
 
 	// upsert SMTP settings
-	_, err = common.MailDb.Exec(`
+	_, err = common.Db.Exec(`
 		INSERT INTO mailer_config (id, host, port, username, password) VALUES (1, ?, ?, ?, ?)
 		ON CONFLICT(id) DO UPDATE SET 
 		host = EXCLUDED.host, port = EXCLUDED.port, username = EXCLUDED.username, password = EXCLUDED.password`,
@@ -656,7 +656,7 @@ func (m *AdminHandlers) get_user(c *fiber.Ctx) error {
 
 	// check if the user has the admin role
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, routeCallerUserId.(int))
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, routeCallerUserId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user roles")
 	}
@@ -672,7 +672,7 @@ func (m *AdminHandlers) get_user(c *fiber.Ctx) error {
 
 	// get user from db
 	var user UserMetadata
-	err = AuthDb.Get(&user, `SELECT id, email, created_at FROM users WHERE id = ?`, userId)
+	err = common.Db.Get(&user, `SELECT id, email, created_at FROM users WHERE id = ?`, userId)
 	if err != nil {
 		return c.Redirect("/admin?error=Can't get user metadata")
 	}
@@ -699,7 +699,7 @@ func (m *AdminHandlers) post_reset_user_password(c *fiber.Ctx) error {
 
 	// check if the user has the admin role
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, routeCallerUserId.(int))
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, routeCallerUserId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user roles")
 	}
@@ -715,7 +715,7 @@ func (m *AdminHandlers) post_reset_user_password(c *fiber.Ctx) error {
 
 	// get user from db
 	var user UserMetadata
-	err = AuthDb.Get(&user, `SELECT id, email, created_at FROM users WHERE id = ?`, userId)
+	err = common.Db.Get(&user, `SELECT id, email, created_at FROM users WHERE id = ?`, userId)
 	if err != nil {
 		return c.Redirect("/admin?error=Can't get user metadata")
 	}
@@ -734,7 +734,7 @@ func (m *AdminHandlers) post_reset_user_password(c *fiber.Ctx) error {
 		return c.Redirect("/admin/users/" + userId + "?error=Can't hash password")
 	}
 
-	_, err = AuthDb.Exec(`UPDATE users SET password = ? WHERE id = ?`, string(hashedPassword), userId)
+	_, err = common.Db.Exec(`UPDATE users SET password = ? WHERE id = ?`, string(hashedPassword), userId)
 	if err != nil {
 		return c.Redirect("/admin/users/" + userId + "?error=Can't update user password")
 	}
@@ -758,7 +758,7 @@ func (m *AdminHandlers) get_new_signup_code(c *fiber.Ctx) error {
 
 	// check if the user has the admin role
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user roles")
 	}
@@ -788,7 +788,7 @@ func (m *AdminHandlers) post_signup_code(c *fiber.Ctx) error {
 
 	// check if the user has the admin role
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user roles")
 	}
@@ -815,7 +815,7 @@ func (m *AdminHandlers) post_signup_code(c *fiber.Ctx) error {
 	code = strings.ToLower(code)
 
 	// insert the signup code into the database
-	_, err = AuthDb.Exec(`INSERT INTO signup_codes (code, uses) VALUES (?, ?)`, code, usesInt)
+	_, err = common.Db.Exec(`INSERT INTO signup_codes (code, uses) VALUES (?, ?)`, code, usesInt)
 	if err != nil {
 		if strings.Contains(err.Error(), "UNIQUE constraint failed") {
 			return c.Redirect("/admin/signup-codes/new?error=Signup code already exists")
@@ -842,7 +842,7 @@ func (m *AdminHandlers) get_edit_signup_code(c *fiber.Ctx) error {
 
 	// check if the user has the admin role
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user roles")
 	}
@@ -855,7 +855,7 @@ func (m *AdminHandlers) get_edit_signup_code(c *fiber.Ctx) error {
 
 	// get the signup code from the database
 	var signupCode SignupCode
-	err = AuthDb.Get(&signupCode, `SELECT code, uses, created_at FROM signup_codes WHERE code = ?`, code)
+	err = common.Db.Get(&signupCode, `SELECT code, uses, created_at FROM signup_codes WHERE code = ?`, code)
 	if err != nil {
 		return c.Redirect("/admin?error=Can't get signup code")
 	}
@@ -882,7 +882,7 @@ func (m *AdminHandlers) put_signup_code(c *fiber.Ctx) error {
 
 	// check if the user has the admin role
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user roles")
 	}
@@ -904,7 +904,7 @@ func (m *AdminHandlers) put_signup_code(c *fiber.Ctx) error {
 	}
 
 	// update the signup code in the database
-	_, err = AuthDb.Exec(`UPDATE signup_codes SET uses = ? WHERE code = ?`, usesInt, strings.ToLower(code))
+	_, err = common.Db.Exec(`UPDATE signup_codes SET uses = ? WHERE code = ?`, usesInt, strings.ToLower(code))
 	if err != nil {
 		return c.Redirect(fmt.Sprintf("/admin/signup-codes/%s?error=Can't update signup code", code))
 	}
@@ -928,7 +928,7 @@ func (m *AdminHandlers) delete_signup_code(c *fiber.Ctx) error {
 
 	// check if the user has the admin role
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user roles")
 	}
@@ -945,7 +945,7 @@ func (m *AdminHandlers) delete_signup_code(c *fiber.Ctx) error {
 	}
 
 	// delete the signup code from the database
-	_, err = AuthDb.Exec(`DELETE FROM signup_codes WHERE code = ?`, code)
+	_, err = common.Db.Exec(`DELETE FROM signup_codes WHERE code = ?`, code)
 	if err != nil {
 		return c.Redirect("/admin?error=Can't delete signup code")
 	}
@@ -969,7 +969,7 @@ func (m *AdminHandlers) delete_signup_codes(c *fiber.Ctx) error {
 
 	// check if the user has the admin role
 	var count int
-	err = AuthDb.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
+	err = common.Db.Get(&count, `SELECT COUNT(*) FROM user_roles WHERE user_id = ? AND role = "admin"`, userId.(int))
 	if err != nil {
 		return c.Redirect("/login?error=Can't get user roles")
 	}
@@ -991,7 +991,7 @@ func (m *AdminHandlers) delete_signup_codes(c *fiber.Ctx) error {
 
 	// delete the signup codes from the database
 	for _, code := range codes {
-		_, err = AuthDb.Exec(`DELETE FROM signup_codes WHERE code = ?`, strings.ToLower(code))
+		_, err = common.Db.Exec(`DELETE FROM signup_codes WHERE code = ?`, strings.ToLower(code))
 		if err != nil {
 			return c.Redirect("/admin?error=Can't delete signup code: " + code)
 		}

@@ -25,6 +25,7 @@ type Environment struct {
 	// Application settings
 	ENVIRONMENT string `env:"ENVIRONMENT" default:"production"` // development, production, test
 	BASE_URL    string `env:"BASE_URL" default:"http://localhost:3000"`
+	PORT        string `env:"PORT" default:"3000"`
 
 	// * Add more environment variables here
 }
