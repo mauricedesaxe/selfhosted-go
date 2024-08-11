@@ -6,4 +6,6 @@ import (
 
 func main() {
 	cmd.Run()
+	// Block the main goroutine to keep the server running
+	select {}
 }
