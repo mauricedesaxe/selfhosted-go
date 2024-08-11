@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 	"reflect"
+	"slices"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -23,7 +25,7 @@ type Environment struct {
 	// and a default value is not specified, the application will panic.
 
 	// Application settings
-	ENVIRONMENT string `env:"ENVIRONMENT" default:"production"` // development, production, test
+	ENVIRONMENT string `env:"ENVIRONMENT" default:"production" type:"enum" options:"development,production,test"`
 	BASE_URL    string `env:"BASE_URL" default:"http://localhost:3000"`
 	PORT        string `env:"PORT" default:"3000"`
 
@@ -50,6 +52,14 @@ func (e *Environment) init() {
 				log.Panicf("Environment variable %s not found", envVar)
 			}
 			log.Printf("Using default value for %s: %s", envVar, envValue)
+		}
+
+		if field.Tag.Get("type") == "enum" {
+			optionsString := field.Tag.Get("options")
+			options := strings.Split(optionsString, ",")
+			if !slices.Contains(options, envValue) {
+				log.Panicf("Invalid value for %s. Expected one of: '%s'; got '%s'", envVar, optionsString, envValue)
+			}
 		}
 		val.Field(i).SetString(envValue)
 	}
