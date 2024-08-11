@@ -11,7 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-func Run() {
+func Run() *fiber.App {
 	// prepare app
 	log.Println("Starting server on port", common.Env.PORT)
 	app := fiber.New()
@@ -23,9 +23,12 @@ func Run() {
 	auth.AddRoutes(app)
 
 	// start server
-	err := app.Listen(fmt.Sprintf(":%s", common.Env.PORT))
-	if err != nil {
-		log.Println("Error starting server")
-		log.Println(err)
-	}
+	go func() {
+		err := app.Listen(fmt.Sprintf(":%s", common.Env.PORT))
+		if err != nil {
+			log.Fatalf("Error starting server: %v", err)
+		}
+	}()
+
+	return app
 }
