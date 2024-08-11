@@ -33,7 +33,17 @@ type Environment struct {
 }
 
 func (e *Environment) init() {
-	err := godotenv.Load()
+	isTest := strings.HasSuffix(os.Args[0], ".test") || strings.Contains(os.Args[0], "/_test/")
+	var dotenvPath string
+	if isTest {
+		log.Println("Loading environment variables from: .env.test")
+		dotenvPath = ".env.test"
+	} else {
+		log.Println("Loading environment variables from: .env")
+		dotenvPath = ".env"
+	}
+
+	err := godotenv.Load(dotenvPath)
 	if err != nil {
 		log.Printf("Error loading .env file: %v", err)
 	}
