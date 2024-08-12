@@ -9,8 +9,7 @@ bin
 *.db*
 
 # env files
-*.env
-*.env.*
+env.json
 
 # log files
 *.log
